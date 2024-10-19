@@ -3,6 +3,7 @@ import Offers from "~/components/landing/Offers.vue";
 import AboutSection from "~/components/landing/AboutSection.vue";
 import ProductsSection from "~/components/landing/ProductsSection.vue";
 import TestimonialsSection from "~/components/landing/TestimonialsSection.vue";
+import NewsSection from "~/components/landing/NewsSection.vue";
 
 definePageMeta({
   layout: "wide",
@@ -16,5 +17,6 @@ definePageMeta({
     <AboutSection/>
     <ProductsSection/>
     <TestimonialsSection/>
+    <NewsSection/>
   </div>
 </template>

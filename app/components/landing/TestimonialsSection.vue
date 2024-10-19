@@ -42,7 +42,7 @@ onMounted(() => getTestimonials());
 </script>
 
 <template>
-  <section class="bg-[#F9F8F8] dark:bg-zinc-900 mb-20">
+  <section class="bg-[#F9F8F8] dark:bg-zinc-900">
     <div class="container py-20 h-full">
       <div class="flex flex-col items-center text-center gap-2 mb-10">
         <h3 class="text-3xl font-yellowtail text-[#7EB693]">Testimonial</h3>
