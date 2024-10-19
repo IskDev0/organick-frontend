@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Offers from "~/components/landing/Offers.vue";
 import AboutSection from "~/components/landing/AboutSection.vue";
+import ProductsSection from "~/components/landing/ProductsSection.vue";
 
 definePageMeta({
   layout: "wide",
@@ -12,5 +13,6 @@ definePageMeta({
     <LandingHero />
     <Offers />
     <AboutSection/>
+    <ProductsSection/>
   </div>
 </template>

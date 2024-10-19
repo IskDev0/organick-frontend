@@ -11,7 +11,9 @@ export default defineNuxtConfig({
     "nuxt-swiper",
     "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
-    "@nuxtjs/color-mode"
+    "@nuxtjs/color-mode",
+    "@pinia/nuxt",
+    "@formkit/auto-animate/nuxt"
   ],
   googleFonts: {
     families: {
