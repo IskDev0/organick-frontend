@@ -35,6 +35,7 @@ export default function createApiClient() {
       }
     },
     async onResponseError({ request, response, options }) {
+
       if (response.status === 401) {
         const tokenRefreshed = await refreshToken();
 
@@ -44,6 +45,8 @@ export default function createApiClient() {
       } else if (response.status === 500) {
         console.error("Server error - please try again later");
       }
+
+      return response._data;
     },
   });
 

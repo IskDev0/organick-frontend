@@ -1,7 +1,11 @@
 <script setup lang="ts">
+import { Button } from "~/components/ui/button";
+
 const emit = defineEmits<{
   (e: "close"): void;
 }>();
+
+const {userInfo} = storeToRefs(useAuthStore())
 </script>
 <template>
   <div
@@ -33,7 +37,10 @@ const emit = defineEmits<{
           <span class="text-primary dark:text-white">Cart</span>
         </div>
       </NuxtLink>
-      <NuxtLink to="/profile">
+      <NuxtLink v-if="!userInfo" to="/auth/login">
+        <Button size="lg">Login</Button>
+      </NuxtLink>
+      <NuxtLink v-else to="/profile">
         <div class="border py-2 pl-2 pr-4 rounded-full flex items-center gap-2">
           <div
             class="flex items-center justify-center bg-primary rounded-full w-8 h-8">

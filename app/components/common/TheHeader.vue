@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import MobileMenu from "~/components/common/MobileMenu.vue";
+import { Button } from "~/components/ui/button";
 
 const showMobileMenu = ref<boolean>(false);
+
+const {userInfo} = storeToRefs(useAuthStore())
+
+const isUserLoggedIn = computed(() => {
+  return userInfo.value !== null
+})
 </script>
 
 <template>
@@ -41,7 +48,10 @@ const showMobileMenu = ref<boolean>(false);
             <span class="text-lg font-semibold">Cart (0)</span>
           </div>
         </NuxtLink>
-        <NuxtLink to="/profile">
+        <NuxtLink v-if="!isUserLoggedIn" to="/auth/login">
+          <Button>Login</Button>
+        </NuxtLink>
+        <NuxtLink v-else to="/profile">
           <div
             class="flex items-center justify-center bg-primary rounded-full w-10 h-10">
             <Icon class="bg-white" size="20" name="ic:round-account-circle" />

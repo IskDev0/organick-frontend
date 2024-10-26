@@ -1,6 +1,6 @@
 <template>
   <TheHeader />
-  <main class="container">
+  <main class="container mt-40">
     <slot />
     <NewsletterSubscribe />
   </main>
