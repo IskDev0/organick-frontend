@@ -32,5 +32,10 @@ export default defineNuxtConfig({
     classSuffix: "",
     preference: "light",
     fallback: "light"
+  },
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.NUXT_BASE_URL
+    }
   }
 });
