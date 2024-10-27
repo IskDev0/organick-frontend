@@ -4,6 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/vue";
 import "swiper/css/pagination";
 import "swiper/css";
 
+const { $apiClient } = useNuxtApp();
+
 const modules = [Pagination, Autoplay];
 
 const swiperConfig = {
@@ -28,17 +30,14 @@ interface ITestimonial {
   role: string;
 }
 
-async function getTestimonials() {
-  const response = await $fetch<ITestimonial[]>(
-    `http://localhost:8080/api/v1/testimonials`,
-  );
+async function getTestimonials(): Promise<void> {
+  const response = await $apiClient<ITestimonial[]>(`/testimonials`);
   if (response.length > 0) {
     testimonials.value = response;
   }
 }
 
 onMounted(() => getTestimonials());
-
 </script>
 
 <template>
@@ -74,9 +73,13 @@ onMounted(() => getTestimonials());
               </div>
               <div
                 class="flex flex-col items-center text-center gap-2 max-w-none md:max-w-[calc(100%-100px)]">
-                <p class="my-6 text-[#525C60] dark:text-white">{{ testimonial.message }}</p>
-                <span class="text-2xl font-semibold">{{testimonial.full_name }}</span>
-                <span>{{testimonial.role}}</span>
+                <p class="my-6 text-[#525C60] dark:text-white">
+                  {{ testimonial.message }}
+                </p>
+                <span class="text-2xl font-semibold">{{
+                  testimonial.full_name
+                }}</span>
+                <span>{{ testimonial.role }}</span>
               </div>
             </div>
           </div>

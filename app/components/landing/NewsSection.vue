@@ -2,11 +2,13 @@
 import { Button } from "~/components/ui/button";
 import type { INews, INewsList } from "~/types/INews";
 
+const { $apiClient } = useNuxtApp();
+
 const news = ref<INews[]>([])
 
 async function getNews() {
   try {
-    const response = await $fetch<INewsList>("http://localhost:8080/api/v1/news", {
+    const response = await $apiClient<INewsList>("/news", {
       method: "GET",
     });
     news.value = response.data;

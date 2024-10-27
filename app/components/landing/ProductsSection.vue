@@ -1,47 +1,37 @@
 <script setup lang="ts">
 import { Button } from "~/components/ui/button";
-import type { IProduct, IProductWithPagination } from "~/types/IProduct";
-import { toast } from "~/components/ui/toast";
 import ProductListSkeleton from "~/components/products/ProductListSkeleton.vue";
+import { useProductsStore } from "~/stores/products";
+import type { IProduct, IProductWithPagination, PaginationInfo } from "~/types/IProduct";
 
-const page = ref<number>(1);
+const { $apiClient } = useNuxtApp();
+
 const isLoading = ref<boolean>(false);
-const products = ref<IProduct[]>([]);
-const reachedLimit = ref<boolean>(false);
+const products = ref<IProduct[]>([])
+const paginationInfo = ref<PaginationInfo>();
 
-//TODO: create http client and move login to store
-async function loadProducts(): Promise<void> {
+async function getProducts(): Promise<void> {
   try {
-    const response = await $fetch<IProductWithPagination>(
-      `http://localhost:8080/api/v1/products?page=${page.value}`,
-    );
-    if (response.data?.length > 0) {
-      products.value = products.value.concat(response.data);
-    }
-
-    if (!Object.keys(response).includes("data")) {
-      reachedLimit.value = true;
-    }
+    const {data, pagination} = await $apiClient<IProductWithPagination>(`/products?limit=12&page=${paginationInfo.value?.currentPage || 1}`);
+    products.value = data;
+    paginationInfo.value = pagination
   }catch (error) {
-    console.error(error.data);
-    toast({
-      title: "Error",
-      description: error.data,
-      variant: "destructive",
-    })
+    console.error(error);
   }
 }
 
-onMounted(() => {
-  loadProducts();
-});
+onMounted(() => getProducts());
 
-async function loadMore() {
-  page.value++;
+async function loadMore(): Promise<void> {
+  paginationInfo.value!.currentPage++;
   isLoading.value = true;
-  await loadProducts();
+  await getProducts();
   isLoading.value = false;
 }
+
+const reachedLimit = computed(() => {
+  return paginationInfo.value?.totalPages === paginationInfo.value?.currentPage;
+});
 </script>
 
 <template>
@@ -51,7 +41,7 @@ async function loadMore() {
       <p class="font-extrabold text-5xl">Our Products</p>
     </div>
     <ProductsList v-if="products.length > 0" :products="products" />
-    <ProductListSkeleton v-else/>
+    <ProductListSkeleton v-else />
     <div v-if="!reachedLimit" class="flex justify-center">
       <Button :disabled="isLoading" size="lg" @click="loadMore"
         >{{ isLoading ? "Loading..." : "Load More" }}
