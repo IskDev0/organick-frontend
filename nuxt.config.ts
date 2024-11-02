@@ -2,7 +2,7 @@ export default defineNuxtConfig({
   compatibilityDate: "2024-04-03",
   devtools: { enabled: true },
   future: {
-    compatibilityVersion: 4
+    compatibilityVersion: 4,
   },
   modules: [
     "@nuxt/image",
@@ -13,29 +13,30 @@ export default defineNuxtConfig({
     "shadcn-nuxt",
     "@nuxtjs/color-mode",
     "@pinia/nuxt",
-    "@formkit/auto-animate/nuxt"
+    "pinia-plugin-persistedstate/nuxt",
+    "@formkit/auto-animate/nuxt",
   ],
   googleFonts: {
     families: {
       Roboto: true,
       "Open+Sans": [400, 600, 700],
-      Yellowtail: true
-    }
+      Yellowtail: true,
+    },
   },
   shadcn: {
-    componentDir: "./components/ui"
+    componentDir: "./components/ui",
   },
   devServer: {
-    port: 5050
+    port: 5050,
   },
   colorMode: {
     classSuffix: "",
     preference: "light",
-    fallback: "light"
+    fallback: "light",
   },
   runtimeConfig: {
     public: {
-      baseURL: process.env.NUXT_BASE_URL
-    }
-  }
+      baseURL: process.env.NUXT_BASE_URL,
+    },
+  },
 });

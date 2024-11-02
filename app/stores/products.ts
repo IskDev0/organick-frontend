@@ -1,7 +1,7 @@
 import type {
-  IProduct,
+  IProduct, IProductFull,
   IProductWithPagination,
-  PaginationInfo,
+  PaginationInfo
 } from "~/types/IProduct";
 
 export const useProductsStore = defineStore("products", () => {
@@ -31,9 +31,9 @@ export const useProductsStore = defineStore("products", () => {
     }
   };
 
-  const getProduct = async (id: number): Promise<IProduct> => {
+  const getProduct = async (id: number): Promise<IProductFull> => {
     try {
-      return $apiClient<IProduct>(`/products/${id}`);
+      return $apiClient<IProductFull>(`/products/${id}`);
     } catch (error) {
       console.error(error);
       throw error;

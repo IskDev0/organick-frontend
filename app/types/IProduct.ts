@@ -7,16 +7,28 @@ export interface IProduct {
   rating: string;
   image: string;
   category: string;
+  description: string;
+}
+
+export interface ICartItem extends IProduct {
+  quantity: number;
+}
+
+export interface IProductFull extends IProduct {
+  category_id: number;
+  category_name: string;
+  stock: number;
+  quantity: number;
 }
 
 export interface IProductWithPagination {
   data: IProduct[];
-  pagination: PaginationInfo
+  pagination: PaginationInfo;
 }
 
 export interface PaginationInfo {
-    currentPage: number,
-    totalPages: number,
-    totalProducts: number,
-    limit: number
+  currentPage: number;
+  totalPages: number;
+  totalProducts: number;
+  limit: number;
 }
