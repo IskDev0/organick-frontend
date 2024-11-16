@@ -8,9 +8,11 @@ export const useNewsStore = defineStore("news", () => {
   const filters = ref({});
   const paginationInfo = ref();
 
-  const getNews = async () => {
+  const getNews = async (page = 1): Promise<void> => {
     try {
-      const { data, pagination } = await $apiClient<INewsList>("/news");
+      const { data, pagination } = await $apiClient<INewsList>(
+        `/news?page=${page}`,
+      );
       news.value = data;
       paginationInfo.value = pagination;
     } catch (error) {
@@ -38,6 +40,7 @@ export const useNewsStore = defineStore("news", () => {
 
   return {
     news,
+    paginationInfo,
     filters,
     getNews,
     getNewsById,
