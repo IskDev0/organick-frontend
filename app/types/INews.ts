@@ -12,7 +12,7 @@ export interface INews {
 
 export interface INewsList {
   data: INews[];
-  paginationInfo: {
+  pagination: {
     currentPage: number;
     limit: number;
     totalProducts: number;

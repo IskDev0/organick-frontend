@@ -25,7 +25,7 @@ defineProps<{
           <span>{{ `${news.first_name} ${news.last_name}` }}</span>
         </div>
       </NuxtLink>
-      <div class="flex flex-col py-4">
+      <div class="flex flex-col py-2">
         <h3 class="text-2xl font-bold">{{ news.title }}</h3>
         <p class="truncate md:overflow-visible md:whitespace-normal">{{ news.short_description }}</p>
       </div>

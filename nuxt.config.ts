@@ -39,4 +39,7 @@ export default defineNuxtConfig({
       baseURL: process.env.NUXT_BASE_URL,
     },
   },
+  routeRules: {
+    '/news/*': { static: true},
+  }
 });
