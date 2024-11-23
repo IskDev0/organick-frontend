@@ -8,7 +8,12 @@ export const useProductsStore = defineStore("products", () => {
   const { $apiClient } = useNuxtApp();
 
   const products = ref<IProduct[]>([]);
-  const paginationInfo = ref<PaginationInfo>();
+  const paginationInfo = ref<PaginationInfo>({
+    currentPage: 1,
+    totalPages: 1,
+    totalProducts: 1,
+    limit: 12,
+  });
   const newProduct = ref<IProduct | null>(null);
   const updatingProduct = ref<IProduct | null>(null);
   const filters = ref({

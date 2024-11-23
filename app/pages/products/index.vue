@@ -20,18 +20,23 @@ import {
 } from "@/components/ui/select";
 import {Input} from "~/components/ui/input";
 import ProductListSkeleton from "~/components/products/ProductListSkeleton.vue";
-import { useToast } from "~/components/ui/toast";
 import { useDebounceFn } from "@vueuse/core";
 
 const { $apiClient } = useNuxtApp();
-const {toast} = useToast()
 
 const { products, paginationInfo, filters } = storeToRefs(useProductsStore());
-const { getProducts, searchProducts } = useProductsStore();
+const { searchProducts } = useProductsStore();
+
+function handleRedirect(){
+  if (useRoute().query.category_id){
+    filters.value.category_id = parseInt(useRoute().query.category_id as string)
+  }
+}
 
 onMounted(() => {
-  searchProducts()
   getCategories();
+  handleRedirect()
+  searchProducts()
 });
 
 async function goNext(): Promise<void> {
@@ -83,9 +88,9 @@ const handleDebounceSearch = useDebounceFn(() => {
 </script>
 
 <template>
-  <div class="flex items-center justify-between mb-4">
+  <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
     <h1 class="text-3xl font-bold">Products</h1>
-    <div class="w-1/2 flex items-center gap-4">
+    <div class="w-full md:w-1/2 flex flex-col md:flex-row items-center gap-4">
       <Select v-model="filters.category_id">
         <SelectTrigger>
           <SelectValue placeholder="Select a category" />
@@ -102,7 +107,7 @@ const handleDebounceSearch = useDebounceFn(() => {
           </SelectGroup>
         </SelectContent>
       </Select>
-      <div class="relative w-full max-w-sm items-center">
+      <div class="relative w-full md:max-w-sm items-center">
       <Input v-model="filters.name" @input="handleDebounceSearch" type="text" placeholder="Search..." class="pl-10" />
       <span class="absolute start-0 inset-y-0 flex items-center justify-center px-2">
       <Icon name="ic:baseline-search" class="size-6 text-muted-foreground dark:text-muted" />
