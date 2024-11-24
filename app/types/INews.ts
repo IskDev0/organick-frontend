@@ -1,3 +1,5 @@
+import type { IPagination } from "~/types/IPagination";
+
 export interface INews {
   id: number;
   title: string;
@@ -12,10 +14,5 @@ export interface INews {
 
 export interface INewsList {
   data: INews[];
-  pagination: {
-    currentPage: number;
-    limit: number;
-    totalProducts: number;
-    totalPages: number;
-  }
+  pagination: IPagination
 }

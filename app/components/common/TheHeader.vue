@@ -41,6 +41,7 @@ const { cartItems } = storeToRefs(useCartStore())
         </ul>
       </nav>
       <div class="flex items-center gap-4 hidden md:flex">
+        <ClientOnly>
         <NuxtLink to="/cart">
           <div
             class="border py-2 pl-2 pr-4 rounded-full flex items-center gap-2">
@@ -51,15 +52,16 @@ const { cartItems } = storeToRefs(useCartStore())
             <span class="text-lg font-semibold">Cart ({{cartItems.length}})</span>
           </div>
         </NuxtLink>
-        <NuxtLink v-if="!isUserLoggedIn" to="/auth/login">
-          <Button>Login</Button>
-        </NuxtLink>
-        <NuxtLink v-else to="/profile">
-          <div
-            class="flex items-center justify-center bg-primary rounded-full w-10 h-10">
-            <Icon class="bg-white" size="20" name="ic:round-account-circle" />
-          </div>
-        </NuxtLink>
+          <NuxtLink v-if="!isUserLoggedIn" to="/auth/login">
+            <Button>Login</Button>
+          </NuxtLink>
+          <NuxtLink v-else to="/profile">
+            <div
+              class="flex items-center justify-center bg-primary rounded-full w-10 h-10">
+              <Icon class="bg-white" size="20" name="ic:round-account-circle" />
+            </div>
+          </NuxtLink>
+        </ClientOnly>
       </div>
       <div
         @click="showMobileMenu = true"

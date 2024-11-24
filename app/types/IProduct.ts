@@ -1,3 +1,5 @@
+import type { IPagination } from "~/types/IPagination";
+
 export interface IProduct {
   id: number;
   name: string;
@@ -23,12 +25,5 @@ export interface IProductFull extends IProduct {
 
 export interface IProductWithPagination {
   data: IProduct[];
-  pagination: PaginationInfo;
-}
-
-export interface PaginationInfo {
-  currentPage: number;
-  totalPages: number;
-  totalProducts: number;
-  limit: number;
+  pagination: IPagination;
 }

@@ -41,5 +41,11 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/news/*': { static: true},
+  },
+  router: {
+    options: {
+      linkActiveClass: "active",
+      linkExactActiveClass: "active",
+    }
   }
 });
