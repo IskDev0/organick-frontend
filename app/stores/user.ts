@@ -1,7 +1,9 @@
+import type { UserInfo } from "~/types/UserInfo";
+
 export const useUserStore = defineStore("user", () => {
   const { $apiClient } = useNuxtApp();
 
-  const updateUserInfo = async (userForm) => {
+  const updateUserInfo = async (userForm: UserInfo): Promise<void> => {
     try {
       await $apiClient("/users", {
         method: "PUT",
@@ -13,18 +15,20 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  const updateUserPassword = async () => {
+  const updateUserPassword = async (newPassword: string): Promise<void> => {
     try {
       await $apiClient("/users/password", {
-        method: "PUT",
+        method: "patch",
         credentials: "include",
+        body: { newPassword },
       });
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   return {
     updateUserInfo,
+    updateUserPassword,
   };
 });
