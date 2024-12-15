@@ -95,5 +95,7 @@ const totalPrice = computed(() => {
     </div>
   </section>
   <h1 v-else class="text-5xl font-bold text-center">Cart is empty</h1>
-  <Button>Proceed to payment</Button>
+  <NuxtLink v-if="cartItems.length > 0" to="/payment">
+    <Button>Proceed to payment</Button>
+  </NuxtLink>
 </template>

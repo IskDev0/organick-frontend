@@ -23,12 +23,30 @@ export const useCartStore = defineStore('cart', () => {
     }
   })
 
+  function countTotalItem(id: number, quantity: number): number {
+    let item = cartItems.value.find((item) => item.id === id);
+    if (item) {
+      return parseInt(item.price) * quantity;
+    }
+    return 0;
+  }
+
+  const totalPrice = computed(() => {
+    let total = 0;
+    cartItems.value.forEach((item) => {
+      total += countTotalItem(item.id, item.quantity);
+    });
+    return total.toFixed(2);
+  });
+
   return {
     cartItems,
     addToCart,
     removeFromCart,
     isProductInCart,
-    clearCart
+    clearCart,
+    countTotalItem,
+    totalPrice
   }
 
 }, {

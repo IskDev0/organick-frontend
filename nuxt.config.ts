@@ -37,6 +37,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseURL: process.env.NUXT_BASE_URL,
+      cscAPI: process.env.NUXT_CSCAPI_KEY
     },
   },
   routeRules: {

@@ -39,31 +39,6 @@ onMounted(() => {
   searchProducts()
 });
 
-async function goNext(): Promise<void> {
-  paginationInfo.value!.currentPage++;
-  await searchProducts();
-}
-
-async function goPrev(): Promise<void> {
-  paginationInfo.value!.currentPage--;
-  await searchProducts();
-}
-
-async function goFirst(): Promise<void> {
-  paginationInfo.value!.currentPage = 1;
-  await searchProducts();
-}
-
-async function goLast(): Promise<void> {
-  paginationInfo.value!.currentPage = paginationInfo.value!.totalPages;
-  await searchProducts();
-}
-
-async function goPage(page: number): Promise<void> {
-  paginationInfo.value!.currentPage = page;
-  await searchProducts();
-}
-
 const categories = ref<{ id: number; name: string }[]>([]);
 
 async function getCategories(): Promise<void> {
@@ -100,7 +75,7 @@ const handleDebounceSearch = useDebounceFn(() => {
             <SelectItem
               v-for="category in categories"
               :key="category.id"
-              :value="category.id"
+              :value="String(category.id)"
             >
               {{category.name}}
             </SelectItem>
@@ -128,8 +103,8 @@ const handleDebounceSearch = useDebounceFn(() => {
     <PaginationList
       v-slot="{ items }"
       class="flex items-center justify-center gap-1">
-      <PaginationFirst @click="goFirst" />
-      <PaginationPrev @click="goPrev" />
+      <PaginationFirst @click="handlePagination('first', searchProducts, paginationInfo)" />
+      <PaginationPrev @click="handlePagination('prev', searchProducts, paginationInfo)" />
 
       <template v-for="(item, index) in items">
         <PaginationListItem
@@ -138,7 +113,7 @@ const handleDebounceSearch = useDebounceFn(() => {
           :value="item.value"
           as-child>
           <Button
-            @click="goPage(item.value)"
+            @click="handlePagination( 'specific', searchProducts, paginationInfo, item.value)"
             class="w-10 h-10 p-0"
             :variant="item.value === page ? 'default' : 'outline'">
             {{ item.value }}
@@ -147,8 +122,8 @@ const handleDebounceSearch = useDebounceFn(() => {
         <PaginationEllipsis v-else :key="item.type" :index="index" />
       </template>
 
-      <PaginationNext @click="goNext" />
-      <PaginationLast @click="goLast" />
+      <PaginationNext @click="handlePagination('next', searchProducts, paginationInfo)" />
+      <PaginationLast @click="handlePagination('last', searchProducts, paginationInfo)" />
     </PaginationList>
   </Pagination>
 </template>

@@ -87,7 +87,7 @@ async function submitPasswordUpdate() {
 <template>
   <section class="mt-4">
     <form
-      class="bg-zinc-900 p-8 rounded-2xl"
+      class="bg-gray-100 dark:bg-zinc-900 p-8 rounded-2xl"
       v-if="userInfo"
       @submit="onSubmit">
       <h1 class="text-3xl font-bold mb-4">Main Info</h1>
@@ -137,7 +137,7 @@ async function submitPasswordUpdate() {
   </section>
   <section class="mt-8">
     <form
-      class="bg-zinc-900 p-8 rounded-2xl"
+      class="bg-gray-100 dark:bg-zinc-900 p-8 rounded-2xl"
       v-if="userInfo"
       @submit.prevent="submitPasswordUpdate">
       <h1 class="text-3xl font-bold mb-4">Change Password</h1>
