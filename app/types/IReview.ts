@@ -13,5 +13,20 @@ export interface IReview {
 
 export interface IReviewList {
   data: IReview[];
-  pagination: IPagination
+  pagination: IPagination;
+}
+
+export interface IProfileReview extends IReview {
+  first_name: string;
+  last_name: string;
+  product_id: number;
+  product_name: string;
+  product_image: string;
+  price: string;
+  old_price: string;
+}
+
+export interface IProfileReviewList {
+  data: IProfileReview[];
+  pagination: IPagination;
 }

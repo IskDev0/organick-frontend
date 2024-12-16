@@ -1,14 +1,23 @@
-import type { IReview, IReviewList } from "~/types/IReview";
+import type {
+  IProfileReview,
+  IProfileReviewList,
+  IReview,
+  IReviewList,
+} from "~/types/IReview";
 
 export const useReviewsStore = defineStore("reviews", () => {
   const { $apiClient } = useNuxtApp();
 
   const reviews = ref<IReview[]>([]);
   const reviewsPaginationInfo = ref();
+  const userReviews = ref<IProfileReview[]>();
+  const userReviewsPaginationInfo = ref({});
 
   const getReviews = async (id: number): Promise<void> => {
     try {
-      const { data, pagination } = await $apiClient<IReviewList>(`/reviews/${id}`);
+      const { data, pagination } = await $apiClient<IReviewList>(
+        `/reviews/${id}`,
+      );
       reviews.value = data;
       reviewsPaginationInfo.value = pagination;
     } catch (error) {
@@ -16,7 +25,11 @@ export const useReviewsStore = defineStore("reviews", () => {
     }
   };
 
-  const postReview = async (postForm: {rating: number, comment: string, product_id: number}): Promise<void> => {
+  const postReview = async (postForm: {
+    rating: number;
+    comment: string;
+    product_id: number;
+  }): Promise<void> => {
     try {
       await $apiClient("/reviews", {
         method: "POST",
@@ -38,21 +51,26 @@ export const useReviewsStore = defineStore("reviews", () => {
     }
   };
 
-  const getUserReviews = async ():Promise<IReview[]> => {
+  const getUserReviews = async (): Promise<void> => {
     try {
-      return await $apiClient<IReview[]>("/reviews");
+      const { data, pagination } =
+        await $apiClient<IProfileReviewList>("/reviews");
+      if (data) {
+        userReviews.value = data;
+        userReviewsPaginationInfo.value = pagination;
+      }
     } catch (error) {
       console.error(error);
-      return []
     }
-  }
+  };
 
   return {
     reviews,
     reviewsPaginationInfo,
+    userReviews,
     getReviews,
     postReview,
     deleteReview,
-    getUserReviews
+    getUserReviews,
   };
 });
