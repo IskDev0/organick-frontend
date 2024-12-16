@@ -156,7 +156,7 @@ watch(initialQuery, () => {
           v-for="item in items"
           :key="item.id"
           @click="selectItem(item)"
-          class="flex items-center gap-2 p-2 cursor-pointer hover:bg-zinc-700"
+          class="flex items-center gap-2 p-2 cursor-pointer hover:bg-gray-100 dark:hover:bg-zinc-700"
         >
           <span v-for="field in displayFields" :key="field">{{ item[field] }} </span>
           <Check v-if="item.id === selectedItem?.id" />
