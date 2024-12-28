@@ -4,15 +4,17 @@ export interface INews {
   id: number;
   title: string;
   content: string;
-  user_id: number;
+  userId: number;
   preview: string;
-  short_description: string;
-  created_at: string;
-  first_name: string;
-  last_name: string;
+  shortDescription: string;
+  createdAt: string;
+  user: {
+    firstName: string;
+    lastName: string;
+  };
 }
 
 export interface INewsList {
   data: INews[];
-  pagination: IPagination
+  pagination: IPagination;
 }

@@ -20,7 +20,7 @@ export const useNewsStore = defineStore("news", () => {
     }
   };
 
-  const getNewsById = async (id: number): Promise<INews> => {
+  const getNewsById = async (id: string): Promise<INews> => {
     try {
       return await $apiClient<INews>(`/news/${id}`);
     } catch (error) {
@@ -29,7 +29,7 @@ export const useNewsStore = defineStore("news", () => {
     }
   };
 
-  const getNewsByAuthorId = async (id: number): Promise<INews[]> => {
+  const getNewsByAuthorId = async (id: string): Promise<INews[]> => {
     try {
       return await $apiClient<INews[]>(`/news/author/${id}`);
     } catch (error) {
