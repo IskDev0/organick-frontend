@@ -42,6 +42,7 @@ export default defineNuxtConfig({
   },
   routeRules: {
     '/news/*': { static: true},
+    '/admin/*': { ssr: false},
   },
   router: {
     options: {
