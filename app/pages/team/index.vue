@@ -3,8 +3,8 @@ const { $apiClient } = useNuxtApp();
 
 interface TeamMember {
   id: number;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   position: string;
   image: string;
   instagram: string | null;

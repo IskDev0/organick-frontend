@@ -24,12 +24,12 @@ import { useDebounceFn } from "@vueuse/core";
 
 const { $apiClient } = useNuxtApp();
 
-const { products, paginationInfo, filters } = storeToRefs(useProductsStore());
+const { products, productsPaginationInfo, filters } = storeToRefs(useProductsStore());
 const { searchProducts } = useProductsStore();
 
 function handleRedirect(){
-  if (useRoute().query.category_id){
-    filters.value.category_id = parseInt(useRoute().query.category_id as string)
+  if (useRoute().query.categoryId){
+    filters.value.categoryId = useRoute().query.categoryId
   }
 }
 
@@ -50,13 +50,13 @@ async function getCategories(): Promise<void> {
   }
 }
 
-watch(() => filters.value.category_id, () => {
-  paginationInfo.value!.currentPage = 1
+watch(() => filters.value.categoryId, () => {
+  productsPaginationInfo.value!.currentPage = 1
   searchProducts()
 }, {deep: true})
 
 const handleDebounceSearch = useDebounceFn(() => {
-  paginationInfo.value!.currentPage = 1
+  productsPaginationInfo.value!.currentPage = 1
   searchProducts()
 }, 500)
 
@@ -66,7 +66,7 @@ const handleDebounceSearch = useDebounceFn(() => {
   <div class="flex flex-col md:flex-row items-center justify-between gap-4 mb-4">
     <h1 class="text-3xl font-bold">Products</h1>
     <div class="w-full md:w-1/2 flex flex-col md:flex-row items-center gap-4">
-      <Select v-model="filters.category_id">
+      <Select v-model="filters.categoryId">
         <SelectTrigger>
           <SelectValue placeholder="Select a category" />
         </SelectTrigger>
@@ -95,16 +95,16 @@ const handleDebounceSearch = useDebounceFn(() => {
   <Pagination
     v-if="products.length > 0"
     v-slot="{ page }"
-    :total="paginationInfo?.totalProducts"
-    :items-per-page="paginationInfo?.limit"
+    :total="productsPaginationInfo?.totalProducts"
+    :items-per-page="productsPaginationInfo?.limit"
     :sibling-count="1"
     show-edges
     :default-page="1">
     <PaginationList
       v-slot="{ items }"
       class="flex items-center justify-center gap-1">
-      <PaginationFirst @click="handlePagination('first', searchProducts, paginationInfo)" />
-      <PaginationPrev @click="handlePagination('prev', searchProducts, paginationInfo)" />
+      <PaginationFirst @click="handlePagination('first', searchProducts, productsPaginationInfo)" />
+      <PaginationPrev @click="handlePagination('prev', searchProducts, productsPaginationInfo)" />
 
       <template v-for="(item, index) in items">
         <PaginationListItem
@@ -113,7 +113,7 @@ const handleDebounceSearch = useDebounceFn(() => {
           :value="item.value"
           as-child>
           <Button
-            @click="handlePagination( 'specific', searchProducts, paginationInfo, item.value)"
+            @click="handlePagination( 'specific', searchProducts, productsPaginationInfo, item.value)"
             class="w-10 h-10 p-0"
             :variant="item.value === page ? 'default' : 'outline'">
             {{ item.value }}
@@ -122,8 +122,8 @@ const handleDebounceSearch = useDebounceFn(() => {
         <PaginationEllipsis v-else :key="item.type" :index="index" />
       </template>
 
-      <PaginationNext @click="handlePagination('next', searchProducts, paginationInfo)" />
-      <PaginationLast @click="handlePagination('last', searchProducts, paginationInfo)" />
+      <PaginationNext @click="handlePagination('next', searchProducts, productsPaginationInfo)" />
+      <PaginationLast @click="handlePagination('last', searchProducts, productsPaginationInfo)" />
     </PaginationList>
   </Pagination>
 </template>

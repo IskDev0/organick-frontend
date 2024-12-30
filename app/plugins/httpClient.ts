@@ -21,9 +21,6 @@ export default function createApiClient() {
 
   const apiClient = ofetch.create({
     baseURL: config.public.baseURL,
-    headers: {
-      "Content-Type": "application/json",
-    },
     credentials: "include",
     onRequest({ options }) {
       const accessToken = useCookie("accessToken").value;

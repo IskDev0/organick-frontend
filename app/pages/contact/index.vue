@@ -20,7 +20,7 @@ const {toast} = useToast()
 
 const applicationSchema = toTypedSchema(
   z.object({
-    fullname: z.string().min(5, { message: "Name must be at least 5 characters" }).max(50),
+    fullName: z.string().min(5, { message: "Name must be at least 5 characters" }).max(50),
     email: z.string().email({ message: "Invalid email address" }),
     company: z.string().min(5, { message: "Company name must be at least 5 characters" }).max(50),
     subject: z.string().min(5, { message: "Subject must be at least 5 characters" }).max(50),
@@ -45,7 +45,7 @@ async function sendApplication():Promise<void>{
     await $apiClient("/applications", {
       method: "POST",
       body: {
-        full_name: form.values.fullname,
+        fullName: form.values.fullName,
         email: form.values.email,
         company: form.values.company,
         subject: form.values.subject,
@@ -183,7 +183,7 @@ async function sendApplication():Promise<void>{
   </section>
   <form @submit.prevent="onSubmit">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <FormField v-slot="{ componentField }" name="fullname">
+      <FormField v-slot="{ componentField }" name="fullName">
         <FormItem>
           <FormLabel>Full Name*</FormLabel>
           <FormControl>

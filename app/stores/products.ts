@@ -1,35 +1,57 @@
 import type {
-  IProduct, IProductFull,
+  IProduct,
+  IProductFull,
   IProductWithPagination,
-  PaginationInfo
+  PaginationInfo,
 } from "~/types/IProduct";
 
 export const useProductsStore = defineStore("products", () => {
   const { $apiClient } = useNuxtApp();
 
   const products = ref<IProduct[]>([]);
-  const paginationInfo = ref<PaginationInfo>({
+  const productsPaginationInfo = ref<PaginationInfo>({
     currentPage: 1,
     totalPages: 1,
     totalProducts: 1,
-    limit: 12,
+    limit: 10,
   });
-  const newProduct = ref<IProduct | null>(null);
-  const updatingProduct = ref<IProduct | null>(null);
+  const newProduct = ref<IProduct>({
+    name: "",
+    price: "",
+    discount: "",
+    categoryId: null,
+    rating: "",
+    image: "",
+    category: "",
+    description: "",
+  });
+  const updatingProduct = ref<IProduct>({
+    name: "",
+    price: "",
+    discount: "",
+    categoryId: null,
+    rating: "",
+    image: "",
+    category: "",
+    description: "",
+  });
   const filters = ref({
     name: null,
-    category_id: null,
+    categoryId: null,
   });
 
   const getProducts = async (): Promise<void> => {
     try {
       const { data, pagination } = await $apiClient<IProductWithPagination>(
-        `/products?page=${paginationInfo.value?.currentPage || 1}&limit=12`,
+        `/products?page=${productsPaginationInfo.value?.currentPage || 1}&limit=${productsPaginationInfo.value?.limit || 12}`,
       );
 
       if (data?.length > 0) {
-        products.value = data
-        paginationInfo.value = pagination;
+        products.value = data;
+        productsPaginationInfo.value = {
+          ...pagination,
+          limit: pagination.limit.toString(),
+        };
       }
     } catch (error) {
       console.error(error);
@@ -46,28 +68,76 @@ export const useProductsStore = defineStore("products", () => {
   };
 
   const addProduct = async () => {
+    const formData = new FormData();
+
+    if (newProduct.value) {
+      formData.append("name", newProduct.value.name);
+      formData.append("price", String(newProduct.value.price));
+      formData.append(
+        "discount",
+        newProduct.value.discount ? newProduct.value.discount : 0
+      );
+      formData.append(
+        "rating",
+        newProduct.value.rating ? newProduct.value.rating : 0,
+      );
+
+      if (newProduct.value.image) {
+        formData.append("image", newProduct.value.image);
+      } else {
+        console.error("Image file is missing");
+      }
+
+      formData.append("categoryId", newProduct.value.categoryId);
+      formData.append("description", newProduct.value.description);
+    }
+
     try {
       await $apiClient("/products", {
         method: "POST",
-        body: newProduct.value,
+        body: formData,
       });
     } catch (error) {
-      console.error(error);
+      console.error("Request error:", error);
     }
   };
 
-  const updateProduct = async (id: number) => {
+  const updateProduct = async (id: string): Promise<void> => {
+
+    let formData = new FormData();
+    if (updatingProduct.value) {
+      formData.append("name", updatingProduct.value.name);
+      formData.append("price", String(updatingProduct.value.price));
+      formData.append(
+        "discount",
+        updatingProduct.value.discount ? updatingProduct.value.discount : 0,
+      );
+      formData.append(
+        "rating",
+        updatingProduct.value.rating ? updatingProduct.value.rating : 0,
+      );
+
+      if (updatingProduct.value.image) {
+        formData.append("image", updatingProduct.value.image);
+      } else {
+        console.error("Image file is missing");
+      }
+
+      formData.append("categoryId", String(updatingProduct.value.categoryId));
+      formData.append("description", updatingProduct.value.description);
+    }
+
     try {
       await $apiClient(`/products/${id}`, {
         method: "PUT",
-        body: updatingProduct.value,
+        body: formData,
       });
     } catch (error) {
       console.error(error);
     }
   };
 
-  const deleteProduct = async (id: number) => {
+  const deleteProduct = async (id: string): Promise<void> => {
     try {
       await $apiClient(`/products/${id}`, {
         method: "DELETE",
@@ -77,19 +147,22 @@ export const useProductsStore = defineStore("products", () => {
     }
   };
 
-  const searchProducts = async () => {
+  const searchProducts = async (): Promise<void> => {
     const params = new URLSearchParams();
 
     if (filters.value.name) {
       params.append("name", filters.value.name);
     }
 
-    if (filters.value.category_id) {
-      params.append("category_id", filters.value.category_id);
+    if (filters.value.categoryId) {
+      params.append("categoryId", filters.value.categoryId);
     }
 
-    if (paginationInfo.value?.currentPage) {
-      params.append("page", paginationInfo.value.currentPage.toString());
+    if (productsPaginationInfo.value?.currentPage) {
+      params.append(
+        "page",
+        productsPaginationInfo.value.currentPage.toString(),
+      );
     }
 
     try {
@@ -98,7 +171,7 @@ export const useProductsStore = defineStore("products", () => {
       );
       if (data?.length > 0) {
         products.value = data;
-        paginationInfo.value = pagination;
+        productsPaginationInfo.value = pagination;
       }
     } catch (error) {
       console.error(error);
@@ -107,7 +180,7 @@ export const useProductsStore = defineStore("products", () => {
 
   return {
     products,
-    paginationInfo,
+    productsPaginationInfo,
     newProduct,
     updatingProduct,
     filters,

@@ -37,7 +37,7 @@ const { isProductInCart } = storeToRefs(useCartStore());
 const { getReviews, postReview } = useReviewsStore();
 const { reviews } = storeToRefs(useReviewsStore());
 
-const id = Number(useRoute().params.id);
+const id = String(useRoute().params.id)
 
 const { toast } = useToast();
 
@@ -75,7 +75,7 @@ const { handleSubmit, handleReset } = useForm({
 
 const onSubmit = handleSubmit(async (values) => {
   try {
-    await postReview({ ...values, product_id: id })
+    await postReview({ ...values, productId: id })
     toast({
       title: "Success",
       description: "Review added successfully"

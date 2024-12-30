@@ -1,11 +1,11 @@
 import type { IPagination } from "~/types/IPagination";
 
 export interface IProduct {
-  id: number;
+  id?: string;
   name: string;
   price: string;
   discount: string;
-  old_price: string;
+  categoryId?: number | null;
   rating: string;
   image: string;
   category: string;

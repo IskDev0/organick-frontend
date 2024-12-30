@@ -13,7 +13,7 @@ export const useReviewsStore = defineStore("reviews", () => {
   const userReviews = ref<IProfileReview[]>();
   const userReviewsPaginationInfo = ref({});
 
-  const getReviews = async (id: number): Promise<void> => {
+  const getReviews = async (id: string): Promise<void> => {
     try {
       const { data, pagination } = await $apiClient<IReviewList>(
         `/reviews/${id}`,
@@ -28,7 +28,7 @@ export const useReviewsStore = defineStore("reviews", () => {
   const postReview = async (postForm: {
     rating: number;
     comment: string;
-    product_id: number;
+    productId: string;
   }): Promise<void> => {
     try {
       await $apiClient("/reviews", {
