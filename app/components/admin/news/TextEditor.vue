@@ -8,12 +8,10 @@ import StarterKit from '@tiptap/starter-kit'
 import {Editor, EditorContent} from '@tiptap/vue-3'
 
 interface Props {
-  modelValue: string
+  modelValue?: string
 }
 
-const {modelValue} = withDefaults(defineProps<Props>(), {
-  modelValue: ""
-})
+const {modelValue} = defineProps<Props>()
 
 const emit = defineEmits<{
   (e: 'update:modelValue', value: string | undefined): void
@@ -32,6 +30,9 @@ watch(() => modelValue, (value) => {
 })
 
 onMounted(() => {
+
+  console.log(modelValue);
+
   editor.value = new Editor({
     extensions: [
       StarterKit,
@@ -41,6 +42,11 @@ onMounted(() => {
     content: modelValue,
     onUpdate: () => {
       emit('update:modelValue', editor.value?.getHTML())
+    },
+    editorProps: {
+      attributes: {
+        class: "dark:!bg-zinc-900"
+      }
     }
   })
 })
@@ -300,13 +306,12 @@ onBeforeUnmount(() => {
         </Tooltip>
       </TooltipProvider>
     </div>
-    <EditorContent :editor="editor"/>
+    <EditorContent class="text-red-500" :editor="editor"/>
   </div>
 </template>
 
 <style>
 .tiptap {
-  border: 1px solid #e2e2e2;
   padding: 16px;
   background-color: #fff;
   border-radius: 0 0 8px 8px;

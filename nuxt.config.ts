@@ -37,17 +37,20 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       baseURL: process.env.NUXT_BASE_URL,
-      cscAPI: process.env.NUXT_CSCAPI_KEY
+      cscAPI: process.env.NUXT_CSCAPI_KEY,
     },
   },
   routeRules: {
-    '/news/*': { static: true},
-    '/admin/*': { ssr: false},
+    "/news/*": { static: true },
+    "/admin/*": { ssr: false },
   },
   router: {
     options: {
       linkActiveClass: "active",
       linkExactActiveClass: "active",
-    }
-  }
+    },
+  },
+  build: {
+    transpile: ["@vuepic/vue-datepicker"],
+  },
 });
