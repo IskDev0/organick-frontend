@@ -68,7 +68,7 @@ export const useNewsStore = defineStore("news", () => {
     })
     try {
       const { data, pagination } = await $apiClient<INewsList>(
-        `/news/search?${params.toString()}`,
+        `/news/search?page=${searchNewsPagination.value?.currentPage}&limit=${searchNewsPagination.value?.limit}&${params.toString()}`,
       );
       searchNewsItems.value = data;
       searchNewsPagination.value = pagination;
