@@ -13,18 +13,22 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "~/components/ui/textarea";
 import { useToast } from "~/components/ui/toast";
+import { useApplicationsStore } from "~/stores/admin/applications";
+import type { IApplication } from "~/types/admin/IApplication";
 
 const {$apiClient} = useNuxtApp()
 
 const {toast} = useToast()
+
+const {createApplication} = useApplicationsStore()
 
 const applicationSchema = toTypedSchema(
   z.object({
     fullName: z.string().min(5, { message: "Name must be at least 5 characters" }).max(50),
     email: z.string().email({ message: "Invalid email address" }),
     company: z.string().min(5, { message: "Company name must be at least 5 characters" }).max(50),
-    subject: z.string().min(5, { message: "Subject must be at least 5 characters" }).max(50),
-    message: z.string().min(5, { message: "Message must be at least 5 characters" }).max(500),
+    subject: z.string().min(5, { message: "Subject must be at least 5 characters" }).max(150),
+    message: z.string().min(5, { message: "Message must be at least 5 characters" }).max(2048),
   }),
 );
 
@@ -33,39 +37,22 @@ const form = useForm({
 });
 
 const onSubmit = form.handleSubmit(async (values) => {
-  await sendApplication()
-});
-
-function clearForm(){
-  form.handleReset();
-}
-
-async function sendApplication():Promise<void>{
   try {
-    await $apiClient("/applications", {
-      method: "POST",
-      body: {
-        fullName: form.values.fullName,
-        email: form.values.email,
-        company: form.values.company,
-        subject: form.values.subject,
-        message: form.values.message,
-      },
-    });
-    clearForm()
+    await createApplication(values as IApplication)
     toast({
       title: "Success",
       description: "Your application has been sent successfully"
     })
+    form.handleReset();
   } catch (error) {
     console.error(error);
     toast({
       title: "Error",
       description: error.data.message,
       variant: "destructive",
-    })
+    });
   }
-}
+});
 </script>
 
 <template>

@@ -21,38 +21,38 @@ module.exports = {
     },
     extend: {
       colors: {
-        border: "hsla(var(--border))",
-        input: "hsla(var(--input))",
-        ring: "hsla(var(--ring))",
-        background: "hsla(var(--background))",
-        foreground: "hsla(var(--foreground))",
+        border: "hsla(var(--border) / <alpha-value>)",
+        input: "hsla(var(--input) / <alpha-value>)",
+        ring: "hsla(var(--ring) / <alpha-value>)",
+        background: "hsla(var(--background) / <alpha-value>)",
+        foreground: "hsla(var(--foreground) / <alpha-value>)",
         primary: {
-          DEFAULT: "hsla(var(--primary))",
-          foreground: "hsla(var(--primary-foreground))",
+          DEFAULT: "hsla(var(--primary) / <alpha-value>)",
+          foreground: "hsla(var(--primary-foreground) / <alpha-value>)",
         },
         secondary: {
-          DEFAULT: "hsla(var(--secondary))",
-          foreground: "hsla(var(--secondary-foreground))",
+          DEFAULT: "hsla(var(--secondary) / <alpha-value>) )",
+          foreground: "hsla(var(--secondary-foreground) / <alpha-value>)",
         },
         destructive: {
-          DEFAULT: "hsla(var(--destructive))",
-          foreground: "hsla(var(--destructive-foreground))",
+          DEFAULT: "hsla(var(--destructive) / <alpha-value>)",
+          foreground: "hsla(var(--destructive-foreground) / <alpha-value>)",
         },
         muted: {
-          DEFAULT: "hsla(var(--muted))",
-          foreground: "hsla(var(--muted-foreground))",
+          DEFAULT: "hsla(var(--muted) / <alpha-value>)",
+          foreground: "hsla(var(--muted-foreground) / <alpha-value>)",
         },
         accent: {
-          DEFAULT: "hsla(var(--accent))",
-          foreground: "hsla(var(--accent-foreground))",
+          DEFAULT: "hsla(var(--accent) / <alpha-value>)",
+          foreground: "hsla(var(--accent-foreground) / <alpha-value>)",
         },
         popover: {
-          DEFAULT: "hsla(var(--popover))",
-          foreground: "hsla(var(--popover-foreground))",
+          DEFAULT: "hsla(var(--popover) / <alpha-value>)",
+          foreground: "hsla(var(--popover-foreground) / <alpha-value>)",
         },
         card: {
-          DEFAULT: "hsla(var(--card))",
-          foreground: "hsla(var(--card-foreground))",
+          DEFAULT: "hsla(var(--card) / <alpha-value>)",
+          foreground: "hsla(var(--card-foreground) / <alpha-value>)",
         },
       },
       borderRadius: {
