@@ -58,10 +58,12 @@ const analyticsItems: SidebarItem[] = [
   },
   { title: "By Time", url: "/admin/analytics/time", icon: "lucide:clock" },
 ];
+
+const {logout} = useAuthStore()
 </script>
 
 <template>
-  <Sidebar collapsible="icon">
+  <Sidebar variant="inset" collapsible="icon">
     <SidebarHeader>
       <NuxtLink to="/">
         <NuxtImg src="/images/logo.svg" />
@@ -126,7 +128,7 @@ const analyticsItems: SidebarItem[] = [
                 </div>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <div class="flex items-center gap-2">
+                <div @click="logout" class="flex items-center gap-2">
                   <Icon name="lucide:log-out" />
                   <span>Sign out</span>
                 </div>
