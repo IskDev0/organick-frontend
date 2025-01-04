@@ -1,3 +1,5 @@
+import type { IPagination } from "~/types/IPagination";
+
 export interface UserInfo {
   id: string;
   firstName: string;
@@ -14,4 +16,9 @@ export interface UserInfo {
 export interface IRole {
   id: number;
   name: string;
+}
+
+export interface IUsersList {
+  data: UserInfo[],
+  pagination: IPagination
 }

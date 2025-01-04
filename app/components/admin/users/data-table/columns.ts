@@ -3,16 +3,28 @@ import type { ColumnDef } from "@tanstack/vue-table";
 import type { UserInfo } from "~/types/UserInfo";
 import UserRoleDropdown from "~/components/admin/users/data-table/UserRoleDropdown.vue";
 import DeleteUserModal from "~/components/admin/users/data-table/DeleteUserModal.vue";
+import { NuxtImg } from "#components";
 
 export const columns: ColumnDef<UserInfo>[] = [
   {
+    accessorKey: "image",
+    header: () => h("div", { class: "text-left" }, "Image"),
+    cell: ({ row }) => {
+      return h(
+        NuxtImg,
+        { class: "rounded-full w-10 h-10", src: row.getValue("image") },
+        row.getValue("image"),
+      );
+    },
+  },
+  {
     accessorFn: (row) => row.firstName + " " + row.lastName,
     id: "fullname",
-    header: () => h("div", { class: "text-left" }, "Full Name"),
+    header: () => h("div", { class: "text-center" }, "Full Name"),
     cell: ({ row }) => {
       return h(
         "div",
-        { class: "text-left" },
+        { class: "text-center" },
         row.original.firstName + " " + row.original.lastName,
       );
     },
@@ -48,13 +60,14 @@ export const columns: ColumnDef<UserInfo>[] = [
   {
     id: "actions",
     header: () => h("div", { class: "text-center" }, ""),
-    cell: ({row}) => {
+    cell: ({ row }) => {
       return h(DeleteUserModal, {
-        class: "flex justify-center",
         id: row.original.id,
         open: row.original.open,
-        "onUpdate:open": (open: boolean) => {row.original.open = open}
+        "onUpdate:open": (open: boolean) => {
+          row.original.open = open;
+        },
       });
     },
-  }
+  },
 ];

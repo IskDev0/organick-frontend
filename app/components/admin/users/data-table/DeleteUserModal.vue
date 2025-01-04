@@ -48,7 +48,7 @@ async function handleUserDelete(): Promise<void> {
 
 <template>
   <Dialog :open="open" @update:open="emit('update:open', $event)">
-    <DialogTrigger>
+    <DialogTrigger class="w-full text-right">
       <Button variant="ghost">
         <Trash2 :size="20" />
       </Button>
