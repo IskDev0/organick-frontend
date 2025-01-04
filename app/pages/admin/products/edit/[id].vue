@@ -129,6 +129,13 @@ async function handleProductUpdate(): Promise<void> {
                   </SelectContent>
                 </Select>
               </div>
+              <div class="flex flex-col gap-2">
+                <Label>Discount</Label>
+                <Input
+                  v-model="updatingProduct.discount"
+                  type="number"
+                  placeholder="Discount" />
+              </div>
             </div>
           </div>
         </div>

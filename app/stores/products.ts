@@ -82,6 +82,8 @@ export const useProductsStore = defineStore("products", () => {
         newProduct.value.rating ? newProduct.value.rating : 0,
       );
 
+      formData.append('stock', newProduct.value.stock)
+
       if (newProduct.value.image) {
         formData.append("image", newProduct.value.image);
       } else {
@@ -116,6 +118,8 @@ export const useProductsStore = defineStore("products", () => {
         "rating",
         updatingProduct.value.rating ? updatingProduct.value.rating : 0,
       );
+
+      formData.append('stock', updatingProduct.value.stock)
 
       if (updatingProduct.value.image) {
         formData.append("image", updatingProduct.value.image);

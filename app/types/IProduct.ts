@@ -4,7 +4,8 @@ export interface IProduct {
   id?: string;
   name: string;
   price: string;
-  discount: string;
+  oldPrice: string;
+  discount: number;
   categoryId?: number | null;
   rating: string;
   image: string;
@@ -13,13 +14,6 @@ export interface IProduct {
 }
 
 export interface ICartItem extends IProduct {
-  quantity: number;
-}
-
-export interface IProductFull extends IProduct {
-  category_id: number;
-  category_name: string;
-  stock: number;
   quantity: number;
 }
 

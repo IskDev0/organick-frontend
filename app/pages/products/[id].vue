@@ -117,9 +117,9 @@ const onSubmit = handleSubmit(async (values) => {
       </div>
       <div class="flex items-center gap-2">
         <span
-          v-if="productInfo.old_price"
+          v-if="productInfo.oldPrice"
           class="text-gray-400 line-through font-semibold"
-          >${{ productInfo.old_price }}</span
+          >${{ productInfo.oldPrice }}</span
         >
         <span class="font-bold">${{ productInfo.price }}</span>
       </div>
