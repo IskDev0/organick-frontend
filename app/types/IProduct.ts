@@ -11,6 +11,7 @@ export interface IProduct {
   image: string;
   category: string;
   description: string;
+  stock: number;
 }
 
 export interface ICartItem extends IProduct {

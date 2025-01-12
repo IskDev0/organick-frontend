@@ -10,14 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import {
   Stepper,
   StepperDescription,
   StepperItem,
@@ -25,23 +17,28 @@ import {
   StepperTitle,
   StepperTrigger,
 } from "@/components/ui/stepper";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 import { toast } from "@/components/ui/toast";
 import { toTypedSchema } from "@vee-validate/zod";
 import { Check, Circle, Dot } from "lucide-vue-next";
 import { ref } from "vue";
 import * as z from "zod";
-import { Combobox } from "~/components/ui/combobox";
+import { RadioGroup, RadioGroupItem } from "~/components/ui/radio-group";
+import { useUserAddressStore } from "~/stores/profile/user-address";
+import AddAddressModal from "~/components/profile/address/AddAddressModal.vue";
 
 const { $apiClient } = useNuxtApp();
 
 const formSchema = [
   z.object({
-    address_line1: z.string({ required_error: "Address is required" }),
-    address_line2: z.string().optional(),
-    city: z.string({ required_error: "City is required" }),
-    state: z.string({ required_error: "State is required" }),
-    postal_code: z.string({ required_error: "Postal code is required" }),
-    country: z.string({ required_error: "Country is required" }),
+    addressId: z.string({ required_error: "Address is required" }),
   }),
   z.object({
     card_number: z
@@ -82,14 +79,7 @@ async function onSubmit(values: any) {
     await $apiClient("/orders", {
       method: "POST",
       body: {
-        address: {
-          address_line1: values.address_line1,
-          address_line2: values.address_line2,
-          city: values.city,
-          state: values.state,
-          postal_code: values.postal_code,
-          country: values.country,
-        },
+        addressId: values.addressId,
         items: cartItems.value.map((item) => {
           return {
             productId: item.id,
@@ -109,106 +99,23 @@ async function onSubmit(values: any) {
   } catch (error) {
     toast({
       title: "Error",
-      description: error,
+      description: error.data.message,
+      variant: "destructive",
     });
-  }
-}
-
-const countries = ref<ICountry[]>([]);
-
-const api = useRuntimeConfig().public.cscAPI;
-
-interface ICountry {
-  id: number;
-  name: string;
-  iso2: string;
-  iso3: string;
-  phonecode: string;
-  capital: string;
-  currency: string;
-  native: string;
-  emoji: string;
-}
-
-interface IState {
-  id: number;
-  name: string;
-  iso2: string;
-}
-
-interface ICity {
-  id: number;
-  name: string;
-  latitude: string;
-  longitude: string;
-}
-
-const selectedCountry = ref<ICountry>();
-
-const selectedState = ref<IState>();
-
-async function getCountries(): Promise<void> {
-  try {
-    let response = await fetch("https://api.countrystatecity.in/v1/countries", {
-      method: "GET",
-      headers: {
-        "X-CSCAPI-KEY": api,
-      },
-      redirect: "follow",
-    });
-    countries.value = await response.json();
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-const states = ref<IState[]>([]);
-
-async function getStates(country: ICountry) {
-  try {
-    const response = await fetch(
-      `https://api.countrystatecity.in/v1/countries/${country.iso2}/states`,
-      {
-        method: "GET",
-        headers: {
-          "X-CSCAPI-KEY": api,
-        },
-        redirect: "follow",
-      },
-    );
-    states.value = await response.json();
-    selectedCountry.value = country;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-const cities = ref<ICity[]>([]);
-
-async function getCities(state: IState) {
-  try {
-    const response = await fetch(
-      `https://api.countrystatecity.in/v1/countries/${selectedCountry.value.iso2}/states/${state.iso2}/cities`,
-      {
-        method: "GET",
-        headers: {
-          "X-CSCAPI-KEY": api,
-        },
-        redirect: "follow",
-      },
-    );
-    cities.value = await response.json();
-    selectedState.value = state;
-  } catch (error) {
-    console.error(error);
   }
 }
 
 onMounted(() => {
-  getCountries();
+  getUserAddresses();
 });
 
 const { cartItems, totalPrice } = storeToRefs(useCartStore());
+const { countTotalItem } = useCartStore();
+
+const { getUserAddresses } = useUserAddressStore();
+const { userAddresses } = storeToRefs(useUserAddressStore());
+
+const isAddAddressModalOpen = ref<boolean>(false);
 </script>
 
 <template>
@@ -280,89 +187,44 @@ const { cartItems, totalPrice } = storeToRefs(useCartStore());
 
         <div class="flex flex-col gap-4 mt-4">
           <template v-if="stepIndex === 1">
-            <FormField v-slot="{ componentField }" name="address_line1">
-              <FormItem>
-                <FormLabel>Address</FormLabel>
-                <FormControl>
-                  <Input v-bind="componentField" placeholder="Address" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
+            <div>
+              <AddAddressModal
+                :is-open="isAddAddressModalOpen"
+                @update:open="isAddAddressModalOpen = $event" />
+              <FormField
+                v-slot="{ componentField }"
+                type="radio"
+                name="addressId">
+                <FormItem class="space-y-3">
+                  <FormLabel>Select your address</FormLabel>
 
-            <FormField v-slot="{ componentField }" name="address_line2">
-              <FormItem>
-                <FormLabel>Address Line (optional)</FormLabel>
-                <FormControl>
-                  <Input v-bind="componentField" placeholder="Address" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
-
-            <FormField v-slot="{ componentField }" name="country">
-              <FormItem>
-                <FormLabel>Country</FormLabel>
-                <FormControl>
-                  <Combobox
-                    v-bind="componentField"
-                    @select="getStates($event)"
-                    :static-items="countries"
-                    display-field="name"
-                    placeholder="Select a country" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
-
-            <FormField v-slot="{ componentField }" name="state">
-              <FormItem>
-                <FormLabel>State</FormLabel>
-                <FormControl>
-                  <Combobox
-                    v-bind="componentField"
-                    @select="getCities($event)"
-                    :static-items="states"
-                    display-field="name"
-                    placeholder="Select a state" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
-
-            <FormField v-slot="{ componentField }" name="city">
-              <FormItem>
-                <FormLabel>City</FormLabel>
-                <FormControl>
-                  <Select v-bind="componentField">
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a city" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem
-                          v-for="city in cities"
-                          :key="city.id"
-                          :value="city.name"
-                          >{{ city.name }}
-                        </SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
-
-            <FormField v-slot="{ componentField }" name="postal_code">
-              <FormItem>
-                <FormLabel>Postal Code</FormLabel>
-                <FormControl>
-                  <Input v-bind="componentField" placeholder="Postal Code" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
+                  <FormControl>
+                    <RadioGroup
+                      class="flex flex-col space-y-2"
+                      v-bind="componentField">
+                      <FormItem
+                        v-for="address in userAddresses"
+                        class="flex items-center space-y-0 gap-x-3">
+                        <FormControl>
+                          <RadioGroupItem :value="address.id" />
+                        </FormControl>
+                        <FormLabel class="font-normal">
+                          <p>{{ address.addressLine1 }}</p>
+                          <p v-if="address.addressLine2">
+                            {{ address.addressLine2 }}
+                          </p>
+                          <p>
+                            {{ address.country }}, {{ address.state }},
+                            {{ address.city }} {{ address.zipCode }}
+                          </p>
+                        </FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </FormField>
+            </div>
           </template>
 
           <template v-if="stepIndex === 2">
@@ -403,9 +265,36 @@ const { cartItems, totalPrice } = storeToRefs(useCartStore());
           </template>
 
           <template v-if="stepIndex === 3">
-            <div v-for="cartItem in cartItems">
-              <p>{{ cartItem }}</p>
-            </div>
+            <Table class="bg-white dark:bg-zinc-800 border">
+              <TableHeader>
+                <TableRow>
+                  <TableHead> Product</TableHead>
+                  <TableHead>Quantity</TableHead>
+                  <TableHead>Price</TableHead>
+                  <TableHead> Total</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow v-for="cartItem in cartItems">
+                  <TableCell>
+                    <div class="flex items-center gap-2">
+                      <NuxtImg
+                        class="h-20 w-20"
+                        :src="cartItem.image"
+                        :alt="cartItem.name" />
+                      <span>{{ cartItem.name }}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell>{{ cartItem.quantity }}</TableCell>
+                  <TableCell>${{ cartItem.price }}</TableCell>
+                  <TableCell>
+                    ${{
+                      countTotalItem(cartItem.id, cartItem.quantity).toFixed(2)
+                    }}
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
           </template>
         </div>
 

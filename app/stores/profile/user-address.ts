@@ -3,7 +3,7 @@ import type { IAddress } from "~/types/profile/IAddress";
 export const useUserAddressStore = defineStore("user-address", () => {
   const { $apiClient } = useNuxtApp();
 
-  const userAddresses = ref([]);
+  const userAddresses = ref<IAddress[]>([]);
 
   const getUserAddresses = async (): Promise<void> => {
     try {
@@ -13,7 +13,15 @@ export const useUserAddressStore = defineStore("user-address", () => {
     }
   };
 
-  const addUserAddress = async (postData: IAddress) => {
+  const addUserAddress = async (
+    postData: IAddress,
+  ): Promise<
+    | boolean
+    | {
+        error: any;
+        status: boolean;
+      }
+  > => {
     try {
       const response = await $apiClient("/users/address", {
         method: "POST",
