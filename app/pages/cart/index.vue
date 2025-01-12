@@ -19,7 +19,7 @@ import { Button } from "~/components/ui/button";
 const {removeFromCart} = useCartStore()
 const { cartItems } = storeToRefs(useCartStore());
 
-function countTotalItem(id: number, quantity: number): number {
+function countTotalItem(id: string, quantity: number): number {
   let item = cartItems.value.find((item) => item.id === id);
   if (item) {
     return parseInt(item.price) * quantity;
@@ -57,9 +57,7 @@ const totalPrice = computed(() => {
           <TableCell>{{ item.name }}</TableCell>
           <TableCell>
             <p>
-              <span class="text-gray-400 line-through"
-                >${{ item.old_price }}</span
-              >
+              <span v-if="item.oldPrice" class="text-gray-400 line-through">${{ item.oldPrice }}</span>
               <span class="ml-2 font-bold">${{ item.price }}</span>
             </p>
           </TableCell>

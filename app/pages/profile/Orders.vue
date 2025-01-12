@@ -46,23 +46,25 @@ interface IOrder {
   updated_at: string;
   payment_method: string;
   order_items: IOrderItem[];
-  shipping_address: IOrderShippingAddress;
+  UserAddress: IOrderShippingAddress;
 }
 
 interface IOrderItem {
   quantity: number;
-  product_id: number;
-  product_name: string;
-  product_image: string;
+  productId: number;
+  product: {
+    name: string;
+    image: string
+  }
   price: number;
 }
 
 interface IOrderShippingAddress {
-  address_line1: string;
-  address_line2: string;
+  addressLine1: string;
+  addressLine2: string;
   city: string;
   state: string;
-  postal_code: string;
+  zipCode: string;
   country: string;
 }
 
@@ -114,7 +116,9 @@ function setBadgeColor(status: string): string {
 }
 
 function getShippingAddress(order: IOrder): string {
-  return `${order.shipping_address.address_line1}, ${order.shipping_address.city}, ${order.shipping_address.state}, ${order.shipping_address.postal_code}, ${order.shipping_address.country}`;
+  if (order){
+    return `${order.UserAddress.addressLine1}, ${order.UserAddress.city}, ${order.UserAddress.state}, ${order.UserAddress.zipCode}, ${order.UserAddress.country}`;
+  }
 }
 
 function getItemTotal(item: IOrderItem): string {
@@ -134,9 +138,7 @@ function getItemTotal(item: IOrderItem): string {
         <AccordionTrigger class="hover:no-underline">
           <div class="flex items-center justify-between w-full mr-4 font-bold">
             <p>Order #{{ order.id }}</p>
-            <Badge :class="setBadgeColor(order.status)">{{
-              order.status
-            }}</Badge>
+            <Badge :class="setBadgeColor(order.status)">{{order.status}}</Badge>
           </div>
         </AccordionTrigger>
         <AccordionContent class="flex flex-col gap-4">
@@ -151,21 +153,21 @@ function getItemTotal(item: IOrderItem): string {
             </TableHeader>
             <TableBody>
               <TableRow
-                v-for="item in order.order_items"
-                :key="item.product_id">
+                v-for="item in order.orderItems"
+                :key="item.id">
                 <TableCell>
                   <NuxtLink
-                    :to="`/products/${item.product_id}`"
+                    :to="`/products/${item.productId}`"
                     class="flex items-center gap-4">
                     <img
-                      :src="item.product_image"
-                      :alt="item.product_name"
+                      :src="item.product.image"
+                      :alt="item.product.name"
                       class="w-16 h-16" />
-                    <p>{{ item.product_name }}</p>
+                    <p>{{ item.product.name }}</p>
                   </NuxtLink>
                 </TableCell>
                 <TableCell>{{ item.quantity }}</TableCell>
-                <TableCell>${{ item.price.toFixed(2) }}</TableCell>
+                <TableCell>${{ item.price }}</TableCell>
                 <TableCell>${{ getItemTotal(item) }}</TableCell>
               </TableRow>
             </TableBody>
@@ -174,7 +176,7 @@ function getItemTotal(item: IOrderItem): string {
             <p class="text-sm text-muted-foreground">
               Ordered on {{ getDate(order.created_at) }}
             </p>
-            <p class="font-bold text-lg">${{ order.total_amount }}</p>
+            <p class="font-bold text-lg">${{ order.totalAmount }}</p>
           </div>
           <div
             class="flex flex-col gap-2 bg-white dark:bg-zinc-800 p-4 rounded-lg">
