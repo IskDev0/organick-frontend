@@ -30,6 +30,7 @@ async function addPost(form) {
       method: "POST",
       body: form,
     });
+    navigateTo("/admin/news")
   } catch (error) {
     console.error(error);
   }
