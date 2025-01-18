@@ -40,7 +40,11 @@ const menuItems: SidebarItem[] = [
 ];
 
 const analyticsItems: SidebarItem[] = [
-  { title: "By Clients", url: "/admin/analytics/clients", icon: "lucide:user" },
+  {
+    title: "By Customers",
+    url: "/admin/analytics/customers",
+    icon: "lucide:user",
+  },
   {
     title: "By Orders",
     url: "/admin/analytics/orders",
@@ -51,15 +55,9 @@ const analyticsItems: SidebarItem[] = [
     url: "/admin/analytics/products",
     icon: "lucide:shopping-basket",
   },
-  {
-    title: "By Sales",
-    url: "/admin/analytics/sales",
-    icon: "lucide:dollar-sign",
-  },
-  { title: "By Time", url: "/admin/analytics/time", icon: "lucide:clock" },
 ];
 
-const {logout} = useAuthStore()
+const { logout } = useAuthStore();
 </script>
 
 <template>

@@ -85,6 +85,7 @@ const { register } = useAuthStore();
               <FormLabel>Phone</FormLabel>
               <FormControl>
                 <Input
+                  v-maska="'+1 (###) ###-####'"
                   type="text"
                   placeholder="Phone"
                   v-bind="componentField" />
