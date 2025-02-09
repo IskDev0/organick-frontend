@@ -25,9 +25,9 @@ interface ITestimonial {
   id: number;
   image: string;
   rating: number;
-  full_name: string;
-  message: string;
-  role: string;
+  fullName: string;
+  content: string;
+  position: string;
 }
 
 async function getTestimonials(): Promise<void> {
@@ -74,12 +74,10 @@ onMounted(() => getTestimonials());
               <div
                 class="flex flex-col items-center text-center gap-2 max-w-none md:max-w-[calc(100%-100px)]">
                 <p class="my-6 text-[#525C60] dark:text-white">
-                  {{ testimonial.message }}
+                  {{ testimonial.content }}
                 </p>
-                <span class="text-2xl font-semibold">{{
-                  testimonial.full_name
-                }}</span>
-                <span>{{ testimonial.role }}</span>
+                <span class="text-2xl font-semibold">{{testimonial.fullName}}</span>
+                <span>{{ testimonial.position }}</span>
               </div>
             </div>
           </div>

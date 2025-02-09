@@ -35,6 +35,7 @@ onMounted(() => getNews());
         </NuxtLink>
       </div>
     </div>
-    <NewsList :newsList="news" />
+    <NewsList v-if="news.length > 0" :newsList="news" />
+    <p class="text-2xl font-bold text-center pt-10">No news found</p>
   </section>
 </template>

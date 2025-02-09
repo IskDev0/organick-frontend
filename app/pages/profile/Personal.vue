@@ -15,7 +15,6 @@ import { useToast } from "~/components/ui/toast";
 
 definePageMeta({
   layout: "profile",
-  middleware: "access",
 });
 
 const { toast } = useToast();
@@ -148,7 +147,8 @@ async function submitPasswordUpdate() {
             <Input
               v-model="newPassword"
               type="password"
-              v-bind="componentField" />
+              v-bind="componentField"
+              placeholder="New Password" />
           </FormControl>
           <FormMessage />
         </FormItem>

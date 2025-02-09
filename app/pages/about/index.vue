@@ -180,7 +180,7 @@ onMounted(async () => await Promise.all([getTeamMembers()]));
         <NuxtLink to="/products?categoryId=2">
           <article>
             <div class="flex flex-col items-center bg-white dark:bg-zinc-900 p-5 rounded-2xl">
-              <NuxtImg src="/images/about/spicy.png" />
+              <NuxtImg class="h-40 aspect-square" src="/images/about/spicy.png" />
               <h3 class="font-bold text-lg pt-5 pb-2">Spicy</h3>
             </div>
           </article>
@@ -188,7 +188,7 @@ onMounted(async () => await Promise.all([getTeamMembers()]));
         <NuxtLink to="/products?categoryId=5">
           <article>
             <div class="flex flex-col items-center bg-white dark:bg-zinc-900 p-5 rounded-2xl">
-              <NuxtImg src="/images/about/nuts.png" />
+              <NuxtImg class="h-40 aspect-square" src="/images/about/nuts.png" />
               <h3 class="font-bold text-lg pt-5 pb-2">Nuts & Feesd</h3>
             </div>
           </article>
@@ -196,7 +196,7 @@ onMounted(async () => await Promise.all([getTeamMembers()]));
         <NuxtLink to="/products?categoryId=6">
           <article>
             <div class="flex flex-col items-center bg-white dark:bg-zinc-900 p-5 rounded-2xl">
-              <NuxtImg src="/images/about/fruits.png" />
+              <NuxtImg class="h-40 aspect-square" src="/images/about/fruits.png" />
               <h3 class="font-bold text-lg pt-5 pb-2">Fruits</h3>
             </div>
           </article>
@@ -204,7 +204,7 @@ onMounted(async () => await Promise.all([getTeamMembers()]));
         <NuxtLink to="/products?categoryId=1">
           <article>
             <div class="flex flex-col items-center bg-white dark:bg-zinc-900 p-5 rounded-2xl">
-              <NuxtImg src="/images/about/vegetables.png" />
+              <NuxtImg class="h-40 aspect-square" src="/images/about/vegetables.png" />
               <h3 class="font-bold text-lg pt-5 pb-2">Vegetable</h3>
             </div>
           </article>

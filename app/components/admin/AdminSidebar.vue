@@ -120,10 +120,10 @@ const { logout } = useAuthStore();
               side="top"
               class="w-[--radix-popper-anchor-width]">
               <DropdownMenuItem>
-                <div class="flex items-center gap-2">
+                <NuxtLink to="/profile" class="flex items-center gap-2">
                   <Icon name="lucide:user" />
                   <span>Account</span>
-                </div>
+                </NuxtLink>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <div @click="logout" class="flex items-center gap-2">

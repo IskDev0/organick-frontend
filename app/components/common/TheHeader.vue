@@ -2,6 +2,8 @@
 import MobileMenu from "~/components/common/MobileMenu.vue";
 import { Button } from "~/components/ui/button";
 import { useCartStore } from "~/stores/cart";
+import { SwitchRoot } from "radix-vue";
+import { Switch } from "~/components/ui/switch";
 
 const showMobileMenu = ref<boolean>(false);
 
@@ -12,6 +14,16 @@ const isUserLoggedIn = computed(() => {
 })
 
 const { cartItems } = storeToRefs(useCartStore())
+
+const colorMode = useColorMode();
+
+const isDark = computed(() => {
+  return colorMode.preference === "dark";
+})
+
+const toggleTheme = () => {
+  colorMode.preference = colorMode.preference === "light" ? "dark" : "light";
+};
 </script>
 
 <template>
@@ -61,6 +73,12 @@ const { cartItems } = storeToRefs(useCartStore())
               <Icon class="bg-white" size="20" name="ic:round-account-circle" />
             </div>
           </NuxtLink>
+          <Switch :checked="isDark" @update:checked="toggleTheme">
+            <template #thumb>
+              <Icon v-if="isDark" name="lucide:moon" class="size-3" />
+              <Icon v-else name="lucide:sun" class="size-3" />
+            </template>
+          </Switch>
         </ClientOnly>
       </div>
       <div

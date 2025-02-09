@@ -5,7 +5,6 @@ import AddAddressModal from "~/components/profile/address/AddAddressModal.vue";
 
 definePageMeta({
   layout: "profile",
-  middleware: "access",
 });
 
 const { $apiClient } = useNuxtApp();
@@ -22,10 +21,11 @@ const isAddAddressModalOpen = ref<boolean>(false);
 </script>
 
 <template>
-  <h1 class="text-3xl font-bold mb-10">My Addresses</h1>
-  <AddAddressModal
-    :is-open="isAddAddressModalOpen"
-    @update:open="isAddAddressModalOpen = $event" />
   <AddressList class="mt-10" v-if="userAddresses.length > 0" :addresses="userAddresses" />
-  <p v-else class="text-3xl font-bold text-center">No addresses yet</p>
+  <div class="flex flex-col items-center justify-center h-full gap-4" v-else>
+    <p class="text-3xl font-bold text-center">No addresses yet</p>
+    <AddAddressModal
+      :is-open="isAddAddressModalOpen"
+      @update:open="isAddAddressModalOpen = $event" />
+  </div>
 </template>

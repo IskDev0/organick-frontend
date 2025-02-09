@@ -1,11 +1,22 @@
 <script setup lang="ts">
 import { Button } from "~/components/ui/button";
+import { Switch } from "~/components/ui/switch";
 
 const emit = defineEmits<{
   (e: "close"): void;
 }>();
 
 const {userInfo} = storeToRefs(useAuthStore())
+
+const colorMode = useColorMode();
+
+const isDark = computed(() => {
+  return colorMode.preference === "dark";
+})
+
+const toggleTheme = () => {
+  colorMode.preference = colorMode.preference === "light" ? "dark" : "light";
+};
 </script>
 <template>
   <div
@@ -49,6 +60,12 @@ const {userInfo} = storeToRefs(useAuthStore())
           <span class="text-primary dark:text-white">Profile</span>
         </div>
       </NuxtLink>
+      <Switch :checked="isDark" @update:checked="toggleTheme">
+        <template #thumb>
+          <Icon v-if="isDark" name="lucide:moon" class="size-3" />
+          <Icon v-else name="lucide:sun" class="size-3" />
+        </template>
+      </Switch>
     </div>
     <button @click="emit('close')" class="absolute top-12 right-8">
       <Icon class="bg-primary" size="24" name="lucide:x" />

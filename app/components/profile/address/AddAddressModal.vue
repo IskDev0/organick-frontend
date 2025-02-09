@@ -32,6 +32,7 @@ import { Button } from "~/components/ui/button";
 import { Combobox } from "~/components/ui/combobox";
 import { useUserAddressStore } from "~/stores/profile/user-address";
 import { useToast } from "~/components/ui/toast";
+import {Plus} from "lucide-vue-next"
 
 const { $apiClient } = useNuxtApp();
 
@@ -201,7 +202,10 @@ const defaultValues = {
   <Form v-slot="{ handleSubmit }" :validation-schema="formSchema">
     <Dialog :open="isOpen" @update:open="toggleOpen">
       <DialogTrigger>
-        <Button> Add Address</Button>
+        <Button>
+        <span>Add Address</span>
+          <Plus class="ml-2"/>
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

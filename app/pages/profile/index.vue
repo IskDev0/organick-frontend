@@ -2,7 +2,6 @@
 
 definePageMeta({
   layout: "profile",
-  middleware: "access",
 });
 
 </script>

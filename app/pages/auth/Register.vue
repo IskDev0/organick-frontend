@@ -42,7 +42,6 @@ const showPassword = ref<boolean>(false);
 
 definePageMeta({
   layout: "auth",
-  middleware: "access",
 });
 
 const { register } = useAuthStore();
